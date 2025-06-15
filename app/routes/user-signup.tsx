@@ -1,9 +1,26 @@
 import { Form } from "react-router";
+import axios from "axios";
+import type { Route } from "./+types/user-signup";
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const formData = await request.formData();
+  const userCreateData = Object.fromEntries(formData);
+  const response = await axios.post(
+    "http://127.0.0.1:8000/api/v1/auth/users/users/signup",
+    userCreateData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log(response.data);
+}
 
 export default function UserSignupPage() {
   return (
     <div>
-      <Form>
+      <Form method="post">
         <div>
           <label>Full Name</label>
           <input
